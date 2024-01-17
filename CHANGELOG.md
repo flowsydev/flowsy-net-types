@@ -1,5 +1,13 @@
 # Change Log for Flowsy.Types
 
+## [1.0.1] - 2024-01-16
+### Modified
+- Refactor PrefixedGuid type to fix conversion and parsing properly when using null values
+
+## [1.0.0] - 2024-01-16
+### Modified
+- Refactor PrefixedGuid type to improve conversion and parsing when using null values
+
 ## [0.1.0] - 2023-12-13
 ### Added
 - Added PrefixedGuid type to handle values based on System.Guid with a custom prefix to identify the entity they represent:
@@ -7,7 +15,3 @@
     - cus_688292c9-a6a9-46b3-9ae7-588cbf80d24a (customer)
     - inv_ad32fd1b-cd1b-4366-91a9-c555b4de92a8 (invoice)
     - ...
-
-## [1.0.0] - 2024-01-16
-### Modified
-- Refactor PrefixedGuid type to improve conversion and parsing when using null values
