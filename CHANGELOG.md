@@ -7,3 +7,4 @@
     - cus_688292c9-a6a9-46b3-9ae7-588cbf80d24a (customer)
     - inv_ad32fd1b-cd1b-4366-91a9-c555b4de92a8 (invoice)
     - ...
+- Refactor PrefixedGuid type to improve conversion and parsing when using null values

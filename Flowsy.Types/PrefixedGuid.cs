@@ -40,10 +40,10 @@ public sealed class PrefixedGuid : IComparable<PrefixedGuid>, IEquatable<Prefixe
     public static PrefixedGuid New(string prefix)
         => new (prefix, Guid.NewGuid());
     
-    public static PrefixedGuid Parse(string value)
+    public static PrefixedGuid? Parse(string? value)
     {
-        if (ReferenceEquals(value, null))
-            return Empty;
+        if (string.IsNullOrEmpty(value) || string.IsNullOrWhiteSpace(value))
+            return null;
         
         var parts = value.Split('_');
         if (parts.Length != 2 || parts.Any(s => string.IsNullOrEmpty(s) || string.IsNullOrWhiteSpace(s)))
@@ -53,11 +53,14 @@ public sealed class PrefixedGuid : IComparable<PrefixedGuid>, IEquatable<Prefixe
     }
     
     public static bool TryParse(
-        string stringValue,
+        string? stringValue,
         [MaybeNullWhen(false)] out PrefixedGuid prefixedGuid
     )
     {
         prefixedGuid = null;
+
+        if (string.IsNullOrEmpty(stringValue) || string.IsNullOrWhiteSpace(stringValue))
+            return false;
         
         var parts = stringValue.Split('_');
         if (parts.Length != 2)
@@ -71,7 +74,7 @@ public sealed class PrefixedGuid : IComparable<PrefixedGuid>, IEquatable<Prefixe
     }
 
     public int CompareTo(PrefixedGuid? other)
-        => other is not null
+        => !ReferenceEquals(other, null)
             ? string.Compare(ToString(), other.ToString(), StringComparison.Ordinal)
             : -1;
 
@@ -88,6 +91,9 @@ public sealed class PrefixedGuid : IComparable<PrefixedGuid>, IEquatable<Prefixe
     
     public static bool IsValid(string value)
     {
+        if (ReferenceEquals(value, null))
+            return false;
+        
         var parts = value.Split('_');
         if (parts.Length != 2)
             return false;
@@ -104,8 +110,8 @@ public sealed class PrefixedGuid : IComparable<PrefixedGuid>, IEquatable<Prefixe
         return prefix.Length > 0 && GuidExpression.IsMatch(guid);
     }
     
-    public static implicit operator string(PrefixedGuid value) => value.ToString();
-    public static implicit operator PrefixedGuid(string value) => Parse(value);
+    public static implicit operator string?(PrefixedGuid? value) => value?.ToString();
+    public static implicit operator PrefixedGuid?(string? value) => value is not null ? Parse(value) : null;
 
     public static bool operator ==(PrefixedGuid? left, PrefixedGuid? right)
     {
